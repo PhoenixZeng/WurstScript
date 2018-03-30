@@ -50,6 +50,7 @@ public class RunCustomCommand extends MapRequest {
         super(map, compileArgs, workspaceRoot);
         this.apppath = apppath;
         this.command = command;
+        WLogger.info(this.getClass().getName()+ " -> "+apppath);
     }
 	
 	/**
@@ -107,8 +108,9 @@ public class RunCustomCommand extends MapRequest {
                 mpqEditor.insertFile("war3map.j", compiledScript);
             }
             //String testMapName2 = copyToWarcraftMapDir(testMap);
-	        command = command.replaceAll("\\$APP",appExe.getAbsolutePath());
-	        command = command.replaceAll("\\$MAP",testMap.getAbsolutePath());
+	        WLogger.info("test appExe -> "+appExe.getAbsolutePath().replace("\\","\\\\"));
+	        command = command.replaceAll("\\$APP",appExe.getAbsolutePath().replace("\\","\\\\"));
+	        command = command.replaceAll("\\$MAP",testMap.getAbsolutePath().replace("\\","\\\\"));
 
             WLogger.info("Starting exec the command ... ");
             

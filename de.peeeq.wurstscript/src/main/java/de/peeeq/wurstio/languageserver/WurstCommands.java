@@ -115,10 +115,12 @@ public class WurstCommands {
         if (params.getArguments().isEmpty()) {
             throw new RuntimeException("Missing arguments");
         }
+	    
         Map<?, ?> options = (Map<?, ?>) params.getArguments().get(0);
 	    String command = (String) options.get("command");
         String mapPath = (String) options.get("mappath");
 	    String appPath = (String) options.get("apppath");
+	    WLogger.info("WurstCommands"+ " -> "+appPath);
 	    if (command == null) {
 		    throw new RuntimeException("No mappath given");
 	    }
@@ -126,7 +128,7 @@ public class WurstCommands {
 	        throw new RuntimeException("No mappath given");
         }
 	    if (appPath == null) {
-		    throw new RuntimeException("No wc3path given");
+		    throw new RuntimeException("No appPath given");
 	    }
 
         File map = new File(mapPath);
