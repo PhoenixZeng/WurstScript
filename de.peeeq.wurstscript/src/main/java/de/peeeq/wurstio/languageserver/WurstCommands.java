@@ -32,6 +32,7 @@ public class WurstCommands {
     public static final String WURST_TESTS_FILE = "wurst.tests_file";
     public static final String WURST_TESTS_FUNC = "wurst.tests_func";
     public static final String WURST_PERFORM_CODE_ACTION = "wurst.perform_code_action";
+    public static final String WURST_CUSTOM_COMMAND = "wurst.custom_command";
 
     static List<String> providedCommands() {
         return Arrays.asList(
@@ -39,7 +40,8 @@ public class WurstCommands {
                 WURST_STARTMAP,
                 WURST_BUILDMAP,
                 WURST_TESTS,
-                WURST_PERFORM_CODE_ACTION
+                WURST_PERFORM_CODE_ACTION,
+                WURST_CUSTOM_COMMAND
         );
     }
 
@@ -55,6 +57,8 @@ public class WurstCommands {
                 return server.worker().handle(new PerformCodeActionRequest(server, params));
             case WURST_BUILDMAP:
                 return buildmap(server, params);
+	        case WURST_CUSTOM_COMMAND:
+	            return customCommand(server,params);
         }
         WLogger.info("unhandled command: " + params.getCommand());
         throw new RuntimeException("unhandled command: " + params.getCommand());
@@ -93,17 +97,42 @@ public class WurstCommands {
         }
         Map<?, ?> options = (Map<?, ?>) params.getArguments().get(0);
         String mapPath = (String) options.get("mappath");
-        String wc3Path = (String) options.get("wc3path");
+        String apppath = (String) options.get("apppath");
         if (mapPath == null) {
             throw new RuntimeException("No mappath given");
         }
-        if (wc3Path == null) {
+        if (apppath == null) {
             throw new RuntimeException("No wc3path given");
         }
 
         File map = new File(mapPath);
         List<String> compileArgs = getCompileArgs(workspaceRoot);
-        return server.worker().handle(new RunMap(workspaceRoot, wc3Path, map, compileArgs)).thenApply(x -> x);
+        return server.worker().handle(new RunMap(workspaceRoot, apppath, map, compileArgs)).thenApply(x -> x);
+    }
+	
+    private static CompletableFuture<Object> customCommand(WurstLanguageServer server, ExecuteCommandParams params) {
+    	WFile workspaceRoot = server.getRootUri();
+        if (params.getArguments().isEmpty()) {
+            throw new RuntimeException("Missing arguments");
+        }
+        Map<?, ?> options = (Map<?, ?>) params.getArguments().get(0);
+	    String command = (String) options.get("command");
+        String mapPath = (String) options.get("mappath");
+	    String appPath = (String) options.get("apppath");
+	    if (command == null) {
+		    throw new RuntimeException("No mappath given");
+	    }
+        if (mapPath == null) {
+	        throw new RuntimeException("No mappath given");
+        }
+	    if (appPath == null) {
+		    throw new RuntimeException("No wc3path given");
+	    }
+
+        File map = new File(mapPath);
+        List<String> compileArgs = getCompileArgs(workspaceRoot);
+        return server.worker().handle(new RunCustomCommand(workspaceRoot,appPath, command, map, compileArgs)).thenApply(x ->
+		                                                                                                                 x);
     }
 
     private static final List<String> defaultArgs = ImmutableList.of("-runcompiletimefunctions", "-injectobjects","-stacktraces");
