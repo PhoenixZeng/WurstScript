@@ -75,6 +75,9 @@ dependencies {
 
     // JMPQ by Crigges for handling mpq archives
     compile 'com.github.inwc3:jmpq3:1.5.9'
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.47'
+
 
     // Water's wc3 libs
     compile 'com.github.inwc3:wc3libs:d0a470d9e3'
