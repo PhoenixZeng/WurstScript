@@ -9,33 +9,18 @@ public class NewFeatureTests extends WurstScriptTest {
     private static final String TEST_DIR = "./testscripts/concept/";
 
     @Test
-    public void testEnums() {
-        try {
-            testAssertOkFileWithStdLib(new File(TEST_DIR + "enums.wurst"), false);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void testEnums() throws IOException {
+        testAssertOkFileWithStdLib(new File(TEST_DIR + "enums.wurst"), false);
     }
 
     @Test
-    public void testGenericUnit() {
-        try {
-            testAssertOkFileWithStdLib(new File(TEST_DIR + "generics.wurst"), false);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void testGenericUnit() throws IOException {
+        testAssertOkFileWithStdLib(new File(TEST_DIR + "generics.wurst"), false);
     }
 
     @Test
-    public void testMinusOne() {
-        try {
-            testAssertOkFileWithStdLib(new File(TEST_DIR + "MinusOne.wurst"), false);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public void testMinusOne() throws IOException {
+        testAssertOkFileWithStdLib(new File(TEST_DIR + "MinusOne.wurst"), false);
     }
 
 
@@ -361,5 +346,7 @@ public class NewFeatureTests extends WurstScriptTest {
                 "	testSuccess()"
         );
     }
+
+
 
 }

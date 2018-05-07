@@ -247,7 +247,7 @@ public class AttrFuncDef {
         nextFunc:
         for (NameLink f : funcs3) {
             for (int i = 0; i < argumentTypes.size(); i++) {
-                if (!argumentTypes.get(i).isSubtypeOf(f.getParameterTypes().get(i), node)) {
+                if (!argumentTypes.get(i).isSubtypeOf(f.getParameterType(i), node)) {
                     continue nextFunc;
                 }
             }
@@ -268,7 +268,8 @@ public class AttrFuncDef {
     private static List<NameLink> filterByParamaeterNumber(List<WurstType> argumentTypes, List<NameLink> funcs2) throws EarlyReturn {
         List<NameLink> funcs3 = Lists.newArrayListWithCapacity(funcs2.size());
         for (NameLink f : funcs2) {
-            if (f.getParameterTypes().size() == argumentTypes.size()) {
+            if (f.getParameterTypes().size() == argumentTypes.size()
+                    || (f.getParameterTypes().size() == 1 && f.getParameterTypes().get(0) instanceof WurstTypeVararg)) {
                 funcs3.add(f);
             }
         }

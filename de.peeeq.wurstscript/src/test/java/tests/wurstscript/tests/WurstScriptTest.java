@@ -303,24 +303,36 @@ public class WurstScriptTest {
     private void translateAndTest(String name, boolean executeProg,
                                   boolean executeTests, WurstGui gui, WurstCompilerJassImpl compiler,
                                   WurstModel model) throws Error {
-        compiler.translateProg(model);
+        ImProg imProg = compiler.translateProgToIm(model);
+
 
         if (gui.getErrorCount() > 0) {
             throw gui.getErrorList().get(0);
         }
 
 
-        ImProg imProg = compiler.getImProg();
         writeJassImProg(name, gui, imProg);
+        // TODO enable tests below:
+        // we want to test that the interpreter works correctly before transforming the program in the translation step
+//        if (executeTests) {
+//            executeTests(gui, imProg);
+//        }
+//        if (executeProg) {
+//            executeImProg(gui, imProg);
+//        }
+
+
+        JassProg prog = compiler.transformProgToJass();
+        if (gui.getErrorCount() > 0) {
+            throw gui.getErrorList().get(0);
+        }
+
         if (executeTests) {
             executeTests(gui, imProg);
         }
         if (executeProg) {
             executeImProg(gui, imProg);
         }
-
-
-        JassProg prog = compiler.getProg();
 
 
         if (gui.getErrorCount() > 0) {
