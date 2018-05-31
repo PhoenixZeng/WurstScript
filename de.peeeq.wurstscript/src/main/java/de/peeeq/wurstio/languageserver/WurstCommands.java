@@ -114,11 +114,11 @@ public class WurstCommands {
         if (params.getArguments().isEmpty()) {
             throw new RuntimeException("Missing arguments");
         }
-	    
-        Map<?, ?> options = (Map<?, ?>) params.getArguments().get(0);
-	    String command = (String) options.get("command");
-        String mapPath = (String) options.get("mappath");
-	    String appPath = (String) options.get("apppath");
+	
+	    JsonObject options = (JsonObject) params.getArguments().get(0);
+	    String command = options.get("command").getAsString();
+        String mapPath = options.get("mappath").getAsString();
+	    String appPath = options.get("apppath").getAsString();
 	    WLogger.info("WurstCommands"+ " -> "+appPath);
 	    if (command == null) {
 		    throw new RuntimeException("No mappath given");
